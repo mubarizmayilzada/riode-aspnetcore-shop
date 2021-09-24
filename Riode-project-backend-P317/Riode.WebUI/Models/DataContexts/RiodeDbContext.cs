@@ -1,22 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Riode.WebUI.Models.Entities;
+using System;
 
 namespace Riode.WebUI.Models.DataContexts
 {
     public class RiodeDbContext : DbContext
     {
-        public RiodeDbContext()
-            : base()
-        {
-
-        }
+        public Guid InstanceNumber { get; private set; }
 
         public RiodeDbContext(DbContextOptions options)
             : base(options)
         {
-
+            InstanceNumber = Guid.NewGuid();
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
