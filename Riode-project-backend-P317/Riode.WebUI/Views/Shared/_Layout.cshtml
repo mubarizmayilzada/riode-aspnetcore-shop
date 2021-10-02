@@ -22,6 +22,9 @@
     <link rel="stylesheet" type="text/css" href="~/assets/vendor/magnific-popup/magnific-popup.min.css">
     <link rel="stylesheet" type="text/css" href="~/assets/vendor/owl-carousel/owl.carousel.min.css">
 
+
+    <link href="~/libs/toastr.js/toastr.css" rel="stylesheet" />
+
     <!-- Main CSS File -->
     <link rel="stylesheet" type="text/css" href="~/assets/css/style.min.css">
     @RenderSection("addcss", required: false)
@@ -323,12 +326,24 @@
                                     <h4 class="widget-title">Subscribe to our Newsletter</h4>
                                     <p class="mb-0">Get all the latest information, Sales and Offers.</p>
                                 </div>
-                                <form action="#" class="input-wrapper input-wrapper-inline">
-                                    <input type="email" class="form-control" name="email" id="email"
-                                           placeholder="Email address here..." required />
+                                <form method="post"
+                                      asp-controller="Home"
+                                      asp-action="Subscribe"
+                                      class="input-wrapper input-wrapper-inline"
+                                      id="frmSubscribe">
+                                    <input type="email"
+                                           class="form-control"
+                                           name="email"
+                                           id="email"
+                                           placeholder="Email address here..."
+                                           data-rule-required="true"
+                                           data-msg-required="Bosh buraxila bilmez"
+                                           data-rule-email="true"
+                                           data-msg-email="E-poct unvaniniz uygun deyil" />
                                     <button class="btn btn-primary btn-rounded btn-md ml-2" type="submit">
                                         subscribe<i class="d-icon-arrow-right"></i>
                                     </button>
+                                    @Html.AntiForgeryToken()
                                 </form>
                             </div>
                             <!-- End Newsletter -->
@@ -682,7 +697,8 @@
                 products.
             </p>
             <form action="#" method="get" class="input-wrapper input-wrapper-inline input-wrapper-round">
-                <input type="email" class="form-control email" name="email" id="email2" placeholder="Email address here..."
+                <input type="email"
+                       class="form-control email" name="email" id="email2" placeholder="Email address here..."
                        required="">
                 <button class="btn btn-dark" type="submit">SUBMIT</button>
             </form>
@@ -704,9 +720,69 @@
     <script src="~/assets/vendor/isotope/isotope.pkgd.min.js"></script>
     <script src="~/assets/vendor/jquery.plugin/jquery.plugin.min.js"></script>
     <script src="~/assets/vendor/jquery.countdown/jquery.countdown.min.js"></script>
+    <script src="~/libs/toastr.js/toastr.min.js"></script>
+    <script src="~/libs/jquery-validate/jquery.validate.js"></script>
+    @*<script src="~/libs/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>*@
+
     <!-- Main JS File -->
     <script src="~/assets/js/main.min.js"></script>
+    <script>
+        $(document).ready(function () {
 
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            $('#frmSubscribe').submit(function (e) {
+                e.preventDefault();
+
+                if ($(e.currentTarget).valid() != true)
+                    return;
+
+                const formData = new FormData(e.currentTarget);
+                $.ajax({
+                    url: '@Url.Action("Subscribe")',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response)
+
+                        if (response.error == false) {
+                            e.currentTarget.reset();
+                            console.log("marz");
+                            toastr.success(response.message, "Uğurlu")
+                        }
+                        else {
+                            toastr.error(response.message, "Xəta")
+                        }
+                    },
+                    error: function (response) {
+                        console.log("bura girirem");
+                        toastr.error("teyin edilmeyen xeta bash verib yeniden yoxlayin.", "Xəta")
+                    }
+                })
+            }).validate({
+                errorElement: 'span'
+            });
+        })
+    </script>
 
     @RenderSection("addjs", required: false)
 </body>

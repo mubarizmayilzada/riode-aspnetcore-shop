@@ -164,29 +164,17 @@
                             </h5>
                             <table class="table">
                                 <tbody>
-                                    <tr>
-                                        <th class="font-weight-semi-bold text-dark pl-0">Material</th>
-                                        <td class="pl-4">Praesent id enim sit amet.Tdio</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="font-weight-semi-bold text-dark pl-0">Claimed Size</th>
-                                        <td class="pl-4">Praesent id enim sit</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="font-weight-semi-bold text-dark pl-0">
-                                            Recommended Use
-                                        </th>
-                                        <td class="pl-4">
-                                            Praesent id enim sit amet.Tdio vulputate eleifend
-                                            in in tortor. ellus massa. siti
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="font-weight-semi-bold text-dark border-no pl-0">
-                                            Manufacturer
-                                        </th>
-                                        <td class="border-no pl-4">Praesent id enim</td>
-                                    </tr>
+                                    @foreach (var item in Model.SpecificationValues)
+                                    {
+                                        <tr>
+                                            <th class="font-weight-semi-bold text-dark pl-0">
+                                                @item.Specification.Name
+                                            </th>
+                                            <td class="pl-4">
+                                                @item.Value
+                                            </td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>

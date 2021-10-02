@@ -13,5 +13,7 @@ namespace Riode.WebUI.Models.Entities
         public string ShortDescription { get; set; }
         public string Description { get; set; }
         public virtual ICollection<ProductImage> Images { get; set; }
+        public virtual ICollection<ProductSizeColorItem> ProductSizeColorCollection { get; set; }
+        public virtual ICollection<SpecificationValue> SpecificationValues { get; set; }
     }
 }

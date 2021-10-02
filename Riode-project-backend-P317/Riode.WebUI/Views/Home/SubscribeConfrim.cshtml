@@ -1,0 +1,40 @@
+﻿@{
+    var m = ViewBag.Message as Tuple<bool, string>;
+
+
+}
+
+<nav class="breadcrumb-nav">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="demo1.html"><i class="d-icon-home"></i></a></li>
+            <li>Contact Us</li>
+        </ul>
+    </div>
+</nav>
+<div class="page-header" style="background-image: url(../uploads/images/page-header/contact-us.jpg)">
+    <h1 class="page-title font-weight-bold text-capitalize ls-l">Contact Us</h1>
+</div>
+<div class="page-content mt-10 pt-7">
+    <section class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    @if (m.Item1)
+                    {
+                        <div class="alert alert-danger color-white">
+                            @m.Item2
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success color-white">
+                            @m.Item2
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
